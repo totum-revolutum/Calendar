@@ -205,7 +205,7 @@ function saveEvent(eventData) {
 }
 
 .calendar-box {
-  width: 60%;
+  width: 50%;
   height: 700px;
   background: white;
   padding: 16px;
