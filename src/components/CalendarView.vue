@@ -30,6 +30,13 @@ const calendarOptions = ref({
   views: {
     dayGridMonth: {
       displayEventTime: false,
+      contentHeight: "auto",
+    },
+    timeGridWeek: {
+      contentHeight: "auto",
+    },
+    timeGridDay: {
+      contentHeight: "auto",
     },
   },
   eventTimeFormat: false,
@@ -275,6 +282,10 @@ function saveEvent(eventData) {
   border-width: 1.5px !important;
 }
 
+:deep(.fc-timegrid-slots) {
+  height: auto !important;
+}
+
 :deep(.fc-timegrid-now-indicator-arrow) {
   border: none !important;
   width: 0 !important;
@@ -292,5 +303,16 @@ function saveEvent(eventData) {
   border-left: 6px solid #7bb4ff !important;
   border-top: 6px solid transparent !important;
   border-bottom: 6px solid transparent !important;
+}
+
+:deep(.fc-timeGridWeek-view) .fc-timegrid-body,
+:deep(.fc-timeGridDay-view) .fc-timegrid-body {
+  overflow-y: auto !important;
+  height: calc(100% - 60px) !important;
+  overflow-x: hidden;
+}
+
+:deep(.fc-scroller) {
+  scrollbar-color: #c1c1c1 #f1f1f1;
 }
 </style>
