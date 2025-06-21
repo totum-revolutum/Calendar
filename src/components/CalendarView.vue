@@ -18,6 +18,7 @@ const calendarOptions = ref({
   plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin],
   initialView: "dayGridMonth",
   headerToolbar: false,
+  editable: true,
   height: 650,
   contentHeight: 650,
   dayMaxEventRows: true,
@@ -43,6 +44,18 @@ const calendarOptions = ref({
   events: [],
   dateClick: handleDateClick,
   eventClick: handleEventClick,
+  eventDrop(info) {
+    const event = info.event;
+    const updatedEvent = {
+      id: event.id,
+      title: event.title,
+      date: event.startStr.split("T")[0],
+      time: event.startStr.split("T")[1]?.slice(0, 5) || "",
+      note: event.extendedProps.note || "",
+      color: event.backgroundColor || "#3788d8",
+    };
+    saveEvent(updatedEvent);
+  },
 });
 
 const changeView = (view) => {
@@ -119,6 +132,15 @@ function saveEvent(eventData) {
   showModal.value = false;
   editingEvent.value = null;
 }
+
+function deleteEvent(eventId) {
+  const event = calendarRef.value.getApi().getEventById(eventId);
+  if (event) {
+    event.remove();
+  }
+  showModal.value = false;
+  editingEvent.value = null;
+}
 </script>
 
 <template>
@@ -175,6 +197,7 @@ function saveEvent(eventData) {
           :coords="modalCoords"
           :editingEvent="editingEvent"
           @save="saveEvent"
+          @delete="deleteEvent"
           @close="showModal = false"
         />
       </div>
@@ -314,5 +337,13 @@ function saveEvent(eventData) {
 
 :deep(.fc-scroller) {
   scrollbar-color: #c1c1c1 #f1f1f1;
+}
+
+:deep(.fc-event-time) {
+  display: none !important;
+}
+
+:deep(.fc-event) {
+  border: none !important;
 }
 </style>

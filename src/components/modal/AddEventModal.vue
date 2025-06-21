@@ -11,7 +11,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["save", "close"]);
+const emit = defineEmits(["save", "close", "delete"]);
 
 const localEvent = reactive({
   title: "",
@@ -113,6 +113,13 @@ function saveEvent() {
 
       <div class="modal-actions">
         <button @click="$emit('close')" class="cancel-btn">Cancel</button>
+        <button
+          v-if="props.editingEvent?.id"
+          @click="emit('delete', props.editingEvent.id)"
+          class="delete-btn"
+        >
+          Delete
+        </button>
         <button @click="saveEvent" class="save-btn">Save</button>
       </div>
     </div>
@@ -156,6 +163,7 @@ function saveEvent() {
 
   color: rgb(201, 199, 199);
 }
+
 .modal input {
   width: 100%;
   padding: 6px;
@@ -168,6 +176,7 @@ function saveEvent() {
   position: relative;
   margin-bottom: 10px;
 }
+
 .input-wrapper::after {
   content: "";
   position: absolute;
@@ -183,12 +192,15 @@ function saveEvent() {
   display: flex;
   justify-content: space-between;
 }
-.cancel-btn {
+
+.cancel-btn,
+.delete-btn {
   color: red;
   background: none;
   border: none;
   cursor: pointer;
 }
+
 .save-btn {
   background-color: white;
   color: rgb(121, 121, 121);
@@ -197,6 +209,7 @@ function saveEvent() {
   border-radius: 4px;
   cursor: pointer;
 }
+
 .close-btn {
   position: absolute;
   top: 8px;
